@@ -3,6 +3,7 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Home from "./pages/Home";
 import AddStudent from "./pages/AddStudent";
+import EditStudent from "./components/EditStudent";
 
 function App() {
   return (
@@ -29,11 +30,12 @@ function App() {
             </div>
           </div>
         </nav>
-        <main className="flex-1 flex ustify-center items-start">
+        <main className="flex-1 flex justify-center items-start">
           <div className="w-full max-w-5xl bg-white rounded-lg shadow p-8 mt-8">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/add" element={<AddStudent />} />
+              <Route path="/edit/:id" element={<EditStudent />} />
             </Routes>
           </div>
         </main>
