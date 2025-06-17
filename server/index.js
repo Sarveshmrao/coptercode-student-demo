@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
   res.send("API is running!");
 });
 
+// get all students
 app.get("/api/students", (req, res) => {
   try {
     const students = readStudents();
@@ -28,6 +29,7 @@ app.get("/api/students", (req, res) => {
   }
 });
 
+// get student by id
 app.get("/api/students/:id", (req, res) => {
   const students = readStudents();
   const student = students.find((s) => s.id === parseInt(req.params.id));
@@ -38,6 +40,7 @@ app.get("/api/students/:id", (req, res) => {
   }
 });
 
+// add a new student
 app.post("/api/students", (req, res) => {
     const students = readStudents();
     const newStudent = {...req.body, id: Date.now()};
@@ -46,14 +49,16 @@ app.post("/api/students", (req, res) => {
     res.status(201).json(newStudent);
 });
 
+// update an existing student
 app.put("/api/students/:id", (req, res) => {
-    const students = readStudents();
+    let students = readStudents();
     const id = parseInt(req.params.id);
     students = students.map((s) => (s.id === id ? { ...s, ...req.body } : s));
     writeStudents(students);
     res.json({ message: "Student updated successfully" });
 });
 
+// delete a student
 app.delete("/api/students/:id", (req, res) => {
     let students = readStudents();
     students = students.filter(s => s.id !== parseInt(req.params.id));

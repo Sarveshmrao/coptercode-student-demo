@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "name": "Test student 2",
+    "roll": "testing stuff",
+    "department": "some dept",
+    "email": "email@email.com",
+    "id": 1750137018347,
+    "section": "A"
+  },
+  {
+    "name": "Updated Student",
+    "roll": "This is updated",
+    "department": "This is also updated",
+    "email": "updated@updated.com",
+    "section": "A",
+    "id": 1750137080782
+  },
+  {
+    "name": "Test ",
+    "roll": "testing ",
+    "department": "sddsvsvsd",
+    "email": "email@email",
+    "section": "A",
+    "id": 1750137094537
+  },
+  {
+    "name": "agergaer ",
+    "roll": "fafae ",
+    "department": "fsgrsdf",
+    "email": "fdad@email",
+    "section": "A",
+    "id": 1750137108934
+  },
+  {
+    "name": "afdfad",
+    "roll": "fasdfebrgb",
+    "department": "aferbsrtb",
+    "email": "testing@email.com",
+    "section": "A",
+    "id": 1750137133516
+  }
+]
