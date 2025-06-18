@@ -4,14 +4,21 @@ import { useState, useEffect } from 'react';
 function Home() {
     const [students, setStudents] = useState([]);
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem('students')) || [];
-        setStudents(stored);
+        fetch("http://localhost:5000/api/students")
+        .then((res) => res.json())
+        .then((data) => setStudents(data))
+        .catch((error) => {
+            console.error("Error fetching students:", error);
+            alert("Failed to fetch students. Please try again.");
+        });
     }, []);
 
-    const handleDelete = (id) => {
-        const updated = students.filter((s) => s.id !== id);
-        localStorage.setItem("students", JSON.stringify(updated));
-        setStudents(updated);
+    const handleDelete = async (id) => {
+        await fetch(`http://localhost:5000/api/students/${id}`, {
+            method: 'DELETE',
+        });
+        setStudents((prev) => prev.filter((s) => s.id !== id));
+        alert("Student deleted successfully");
     }
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
