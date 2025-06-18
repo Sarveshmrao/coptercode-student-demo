@@ -16,13 +16,13 @@ function StudentCard({ student, onDelete }) {
         </p>
         <div className="mt-4 flex gap-3">
           <button
-            onClick={() => navigate(`edit/${student.id}`)}
+            onClick={() => navigate(`edit/${student._id}`)}
             className="bg-yellow-500 text-white px-3 py-1 rounded"
           >
             Edit
           </button>
           <button
-            onClick={() => onDelete(student.id)}
+            onClick={() => onDelete(student._id)}
             className="bg-red-500 text-white px-3 py-1 rounded"
           >
             Delete

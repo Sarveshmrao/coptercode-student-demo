@@ -27,7 +27,7 @@ function StudentForm({ onAdd, initialData }) {
         if (!form.name || !form.roll)
           return alert("Name and Roll are required");
         const method = initialData ? 'PUT' : 'POST';
-        const url = initialData ? `http://localhost:5000/api/students/${initialData.id}` : 'http://localhost:5000/api/students';
+        const url = initialData ? `http://localhost:5000/api/students/${initialData._id}` : 'http://localhost:5000/api/students';
         try {
           const response = await fetch(url, {
             method,

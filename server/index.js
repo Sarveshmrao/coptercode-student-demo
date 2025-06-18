@@ -1,73 +1,63 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
+const mongoose = require("mongoose");
+const Student = require("./models/Student");
 
 const app = express();
-const PORT = 5000;
-const DATA_PATH = path.join(__dirname, "data", "students.json");
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-const readStudents = () => JSON.parse(fs.readFileSync(DATA_PATH));
-const writeStudents = (data) => {
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
-};
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1); // Exit the process if connection fails
+  });
 
 app.get("/", (req, res) => {
   res.send("API is running!");
 });
 
 // get all students
-app.get("/api/students", (req, res) => {
-  try {
-    const students = readStudents();
-    res.json(students);
-  } catch (error) {
-    res.status(500).json({ message: "Error reading students data" });
-  }
+app.get("/api/students", async (req, res) => {
+  const students = await Student.find();
+  res.json(students);
 });
 
 // get student by id
-app.get("/api/students/:id", (req, res) => {
-  const students = readStudents();
-  const student = students.find((s) => s.id === parseInt(req.params.id));
-  if (student) {
-    res.json(student);
-  } else {
-    res.status(404).json({ message: "Student not found" });
-  }
+app.get("/api/students/:id", async (req, res) => {
+  const student = await Student.findById(req.params.id);
+  if(student) res.json(student);
+  else res.status(404).json({ message: "Student not found" });
 });
 
 // add a new student
-app.post("/api/students", (req, res) => {
-    const students = readStudents();
-    const newStudent = {...req.body, id: Date.now()};
-    students.push(newStudent);
-    writeStudents(students);
-    res.status(201).json(newStudent);
+app.post("/api/students", async (req, res) => {
+  const newStudent = new Student(req.body);
+  await newStudent.save();
+  res.status(201).json({ message: "Student added successfully", student: newStudent });
 });
 
 // update an existing student
-app.put("/api/students/:id", (req, res) => {
-    let students = readStudents();
-    const id = parseInt(req.params.id);
-    students = students.map((s) => (s.id === id ? { ...s, ...req.body } : s));
-    writeStudents(students);
-    res.json({ message: "Student updated successfully" });
+app.put("/api/students/:id", async (req, res) => {
+  await Student.findByIdAndUpdate(req.params.id, req.body);
+  res.json({ message: "Student updated successfully" });
 });
 
 // delete a student
-app.delete("/api/students/:id", (req, res) => {
-    let students = readStudents();
-    students = students.filter(s => s.id !== parseInt(req.params.id));
-    writeStudents(students);
-    res.json({ message: "Student deleted successfully" });
+app.delete("/api/students/:id", async (req, res) => {
+  await Student.findByIdAndDelete(req.params.id);
+  res.json({ message: "Student deleted successfully" });
 });
 
 app.use((req, res) => {
-    res.status(404).json({ message: "Route not found" });
+  res.status(404).json({ message: "Route not found" });
 });
 
 app.listen(PORT, () => {

@@ -17,7 +17,7 @@ function Home() {
         await fetch(`http://localhost:5000/api/students/${id}`, {
             method: 'DELETE',
         });
-        setStudents((prev) => prev.filter((s) => s.id !== id));
+        setStudents((prev) => prev.filter((s) => s._id !== id));
         alert("Student deleted successfully");
     }
     return (
@@ -26,7 +26,7 @@ function Home() {
                 <p>No students added yet.</p>
             ) : (
                 students.map((s) => (
-                    <StudentCard key={s.id} student={s} onDelete={handleDelete} />
+                    <StudentCard key={s._id} student={s} onDelete={handleDelete} />
                 ))
             )}
         </div>
