@@ -23,7 +23,7 @@ function Home() {
     return (
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             { students.length === 0 ? (
-                <p>No students added yet.</p>
+                <p className="bg-gray-200 text-gray-700 p-4 rounded-lg shadow-md text-center">No students added yet.</p>
             ) : (
                 students.map((s) => (
                     <StudentCard key={s._id} student={s} onDelete={handleDelete} />
